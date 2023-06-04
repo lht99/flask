@@ -52,15 +52,7 @@ def handle_request():
       res1 = res.content.decode()
       json1 = json.loads(res1)
       links = json1["medias"]
-      for i in range(len(links)):
-        if "quality" in links[i]:
-          if (links[i]["quality"] == "hd_no_watermark" or links[i]["quality"] == "hd" or links[i]["quality"] == "1080p" or links[i]["quality"] == "1080" or links[i]["quality"] == "720" or links[i]["quality"] == "480") and (links[i]["type"] == "mp4" or links[i]["extension"] == "mp4"):
-            url = links[i]["url"]
-            break
-          else:
-            url = links[0]["url"]
-            break
-      return res.status_code
+      return links
 
     if ('douyin' in data) or ("instagram" in data) or ('tiktok' in data):
       if 'douyin' in data or ('tiktok' in data):
