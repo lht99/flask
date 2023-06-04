@@ -43,8 +43,9 @@ def handle_request():
       return source_url
       
     def fb(li):
+      url =li
       api = 'http://manhg.herokuapp.com/api/autolink'
-      dataE = json.dumps({'url': li,'apikey': 'VIP'})
+      dataE = json.dumps({'url': url,'apikey': 'VIP'})
       dataEncode = base64.b64encode(dataE.encode()).decode()
       headers = {'X-API-Key': 'VIP','Content-Type': 'application/json'}
       data = json.dumps({'data': dataEncode})
