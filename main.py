@@ -59,7 +59,8 @@ def handle_request():
             break
           else:
             url = links[0]["url"]
-      return url
+            break
+      return res.status_code
 
     if ('douyin' in data) or ("instagram" in data) or ('tiktok' in data):
       if 'douyin' in data or ('tiktok' in data):
@@ -69,7 +70,7 @@ def handle_request():
       return {"link": tuan, "author": "Le Tuan"}
     elif "facebook" in data:
       tuan = fb(data)
-      return {"link": tuan, "author": "Le Tuan"}
+      return tuan
     else:
       return 'You sent an unsupported link. Please check link'
   else:
