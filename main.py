@@ -81,7 +81,7 @@ def handle_request():
     else:
       return 'You sent an unsupported link. Please check link'
   else:
-    return 'API to download Instagram/Douyin/Tiktok video. Please use POST method with link. Developed by Le Tuan. Telegram Download Video: https://t.me/lhtvnbot'
+    return 'API to download Instagram/Douyin/Tiktok/Facebook video. Please use POST method with LINK. Developed by Le Tuan. Telegram Download Video: https://t.me/lhtvnbot'
 
 
 def run():
