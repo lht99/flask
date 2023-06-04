@@ -41,12 +41,34 @@ def handle_request():
       source_tag = video_tag.find('source')
       source_url = source_tag['src']
       return source_url
+      
+    def fb(li):
+      api = 'http://manhg.herokuapp.com/api/autolink'
+      dataE = json.dumps({'url': li,'apikey': 'VIP'})
+      dataEncode = base64.b64encode(dataE.encode()).decode()
+      headers = {'X-API-Key': 'VIP','Content-Type': 'application/json'}
+      data = json.dumps({'data': dataEncode})
+      res = r.post(api, headers=headers, data=data)
+      res1 = res.content.decode()
+      json1 = json.loads(res1)
+      links = json1["medias"]
+      for i in range(len(links)):
+        if "quality" in links[i]:
+          if (links[i]["quality"] == "hd_no_watermark" or links[i]["quality"] == "hd" or links[i]["quality"] == "1080p" or links[i]["quality"] == "1080" or links[i]["quality"] == "720" or links[i]["quality"] == "480") and (links[i]["type"] == "mp4" or links[i]["extension"] == "mp4"):
+            url = links[i]["url"]
+            break
+          else:
+            url = links[0]["url"]
+      return url
 
     if ('douyin' in data) or ("instagram" in data) or ('tiktok' in data):
       if 'douyin' in data or ('tiktok' in data):
         tuan = douyin(data)
       else:
         tuan = insta(data)
+      return {"link": tuan, "author": "Le Tuan"}
+    elif "facebook" in data:
+      tuan = fb(data)
       return {"link": tuan, "author": "Le Tuan"}
     else:
       return 'You sent an unsupported link. Please check link'
