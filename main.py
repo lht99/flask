@@ -49,10 +49,8 @@ def handle_request():
       headers = {'X-API-Key': 'VIP','Content-Type': 'application/json'}
       data = json.dumps({'data': dataEncode})
       res = r.post(api, headers=headers, data=data)
-      res1 = res.content.decode()
-      json1 = json.loads(res1)
-      links = json1["medias"]
-      return links
+      k = res.status_code
+      return k
 
     if ('douyin' in data) or ("instagram" in data) or ('tiktok' in data):
       if 'douyin' in data or ('tiktok' in data):
