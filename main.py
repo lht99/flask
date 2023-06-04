@@ -2,9 +2,6 @@ from flask import Flask, request, Response
 from threading import Thread
 import requests as r
 from bs4 import BeautifulSoup
-import json
-import base64
-
 app = Flask('')
 
 
@@ -43,17 +40,6 @@ def handle_request():
       source_tag = video_tag.find('source')
       source_url = source_tag['src']
       return source_url
-      
-    def fb(li):
-      url =li
-      api = 'http://manhg.herokuapp.com/api/autolink'
-      dataE = json.dumps({'url': url,'apikey': 'VIP'})
-      dataEncode = base64.b64encode(dataE.encode()).decode()
-      headers = {'X-API-Key': 'VIP','Content-Type': 'application/json'}
-      data = json.dumps({'data': dataEncode})
-      res = r.post(api, headers=headers, data=data)
-      k = res.status_code
-      return k
 
     if ('douyin' in data) or ("instagram" in data) or ('tiktok' in data):
       if 'douyin' in data or ('tiktok' in data):
@@ -61,9 +47,6 @@ def handle_request():
       else:
         tuan = insta(data)
       return {"link": tuan, "author": "Le Tuan"}
-    elif "facebook" in data:
-      tuan = fb(data)
-      return tuan
     else:
       return 'You sent an unsupported link. Please check link'
   else:
