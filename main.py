@@ -17,9 +17,11 @@ def handle_request():
     data = request.get_data(as_text=True)
 
     def insta(link):
+      headers = {'accept': 'application/json, text/javascript, */*; q=0.01',
+    'sec-ch-ua-platform': "Windows", 'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.57'}
       url = 'https://v3.saveinsta.app/api/ajaxSearch'
       data = {'q': link}
-      a = r.post(url, data=data)
+      a = r.post(url, data=data, headers = headers)
       b = a.text
       normal_text = b.encode('utf-8').decode('unicode_escape')
       soup = BeautifulSoup(normal_text, 'html.parser')
