@@ -42,32 +42,23 @@ def handle_request():
       source_tag = video_tag.find('source')
       source_url = source_tag['src']
       return source_url
+    
     def fb(li):
-      api = 'http://manhg.herokuapp.com/api/autolink'
-      dataE = json.dumps({'url': li,'apikey': 'VIP'})
-      dataEncode = base64.b64encode(dataE.encode()).decode()
-      headers = {'X-API-Key': 'VIP','Content-Type': 'application/json'}
-      data = json.dumps({'data': dataEncode})
-      res = r.post(api, headers=headers, data=data)
-      res1 = res.content.decode()
-      json1 = json.loads(res1)
-      links = json1["medias"]
-      for i in range(len(links)):
-        if "quality" in links[i]:
-          if (links[i]["quality"] == "hd_no_watermark" or links[i]["quality"] == "hd" or links[i]["quality"] == "1080p" or links[i]["quality"] == "1080" or links[i]["quality"] == "720" or links[i]["quality"] == "480") and (links[i]["type"] == "mp4" or links[i]["extension"] == "mp4"):
-            url = links[i]["url"]
-            break
+      api = 'https://x2download.app/api/ajaxSearch/facebook'
+      headers = {'accept': 'application/json, text/javascript, */*; q=0.01',
+    'sec-ch-ua-platform': "Windows", 'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.57'}
+      data = {'q': li, 'vt': 'facebook'}
+      response1 = r.post(api, data = data, headers = headers)
+      url = response1.json()['links']
+      for key in url:
+        if key =='hd':
+          link = url[key]
+          break
+        elif key == 'sd':
+          ink = url[key]
           else:
-            url = links[0]["url"]
-            break
-        elif "subname" in links[i]:
-          if (links[i]["subname"] == "HD") and (links[i]["type"] == "mp4" or links[i]["extension"] == "mp4"):
-            url = links[i]["url"]
-            break
-          else:
-            url = links[0]["url"]
-            break
-      return url
+            url[key]
+      return link
 
     if ('douyin' in data) or ("instagram" in data) or ('tiktok' in data):
       if 'douyin' in data or ('tiktok' in data):
