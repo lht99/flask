@@ -55,9 +55,10 @@ def handle_request():
           link = url[key]
           break
         elif key == 'sd':
-          ink = url[key]
-          else:
-            url[key]
+          link = url[key]
+          break
+        else:
+          link = url[key]
       return link
 
     if ('douyin' in data) or ("instagram" in data) or ('tiktok' in data):
