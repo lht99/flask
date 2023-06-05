@@ -45,8 +45,7 @@ def handle_request():
     
     def fb(li):
       api = 'https://x2download.app/api/ajaxSearch/facebook'
-      headers = {'accept': 'application/json, text/javascript, */*; q=0.01',
-    'sec-ch-ua-platform': "Windows", 'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.57'}
+      headers = {'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.57'}
       data = {'q': li, 'vt': 'facebook'}
       response1 = r.post(api, data = data, headers = headers)
       url = response1.json()['links']
@@ -67,7 +66,7 @@ def handle_request():
       else:
         tuan = insta(data)
       return {"link": tuan, "author": "Le Tuan"}
-    elif "facebook" in data:
+    elif ("facebook" in data) or ('fb.watch' in data):
       tuan = fb(data)
       return {"link": tuan, "author": "Le Tuan"}
     else:
