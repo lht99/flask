@@ -34,7 +34,7 @@ def handle_request():
       url = lin
       token = 'G7eRpMaa'
       u = f'https://dlpanda.com/'
-      params = {'url': url, 'token': 'G7eRpMaa'}
+      params = {'url': url, 'token': token}
       res = r.get(u, params=params)
       html = res.text
       soup = BeautifulSoup(res.text, 'html.parser')
