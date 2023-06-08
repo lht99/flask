@@ -36,9 +36,9 @@ def handle_request():
     data1 = request.args.to_dict(flat=True)
     for i in data1:
       if 'youtube' in str(i):
-        k = i+'='+data1[i]
+        k = i + '=' + data1[i]
       else:
-        k= i + data1[i]
+        k = i + data1[i]
     data = request.get_data(as_text=True)
     if len(data) == 0:
       data = k
@@ -57,7 +57,8 @@ def handle_request():
         headers={
           'user-agent':
           "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.57"
-        }, timeout=10)
+        },
+        timeout=10)
       b = a.text
       normal_text = b.encode('utf-8').decode('unicode_escape')
       soup = BeautifulSoup(normal_text, 'html.parser')
@@ -78,7 +79,8 @@ def handle_request():
           headers={
             'user-agent':
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.57"
-          }, timeout=30)
+          },
+          timeout=30)
         html = res.text
         soup = BeautifulSoup(res.text, 'html.parser')
         video_tag = soup.find('video')
@@ -86,8 +88,21 @@ def handle_request():
         source_url = source_tag['src']
         tu = res.status_code
       return source_url
+      
+    def fb1(url):
+      ur = 'https://api.ytbvideoly.com/api/thirdvideo/parse'
+      t1 = time.time()
+      ures = r.post(ur, data={'link': url, 'from': 'videodownloaded'})
+      t2 = time.time()
+      for i in ures.json()['data']['videos']['mp4']:
+        if i['format_id'] == 'hd':
+          link = i['url']
+          break
+        else:
+          link = i['url']
+      return link
 
-    def fb1(l):
+    #def fb(l):
       api = 'https://x2download.app/api/ajaxSearch/facebook'
       data = {'q': l, 'vt': 'facebook'}
       tu = 0
@@ -109,48 +124,19 @@ def handle_request():
         else:
           link = "Loi"
       return link
-
+      
     def youtube(url):
-      data = {'q': url, 'vt': 'home'}
-      api = 'https://x2download.app/api/ajaxSearch'
-      k = 0
-      while k == 0:
-        #time.sleep((random.randint(0, 1)))
-        res = r.post(api, params=data, timeout=20)
-        if res.status_code == 200 and res.json()['title']:
-          js = res.json()
-          title = js['title']
-          js0 = js['links']['mp4']
-          ma = []
-          k = res.status_code
-          for i in js0:
-            ma.append(int(js0[i]['key']))
-            maxx = max(ma)
-            if js0[i]['key'] == str(maxx):
-              quality = js0[i]['k']
-            #quality = quality
-      token = js['token']
-      new = {
-        'v_id': js['vid'],
-        'ftype': 'mp4',
-        'fquality': quality,
-        'fname': title,
-        'token': token,
-        'timeExpire': js['timeExpires']
-      }
-      api2 = 'https://dt185.dlsnap11.xyz/api/json/convert'
-      result = 0
-      while result == 0:
-        res2 = r.post(api2, params=new, timeout=30)
-        #print(res2)
-        js2 = res2.json()
-        #print(js2)
-        if js2['status'] == 'success' and js2['result'] != "Converting":
-          url = js2['result']
+      ur = 'https://api.ytbvideoly.com/api/thirdvideo/parse'
+      t1 = time.time()
+      ures = r.post(ur, data = {'link': url,'from': 'videodownloaded'})
+      size = []
+      for i in ures.json()['data']['videos']['mp4']:
+        size.append(i['size'])
+      for i in ures.json()['data']['videos']['mp4']:
+        if i['size'] == max(size):
+          link = i['url']
           break
-        else:
-          continue
-      return url
+      return link
 
     if ('douyin' in data) or ("instagram" in data) or ('tiktok' in data):
       if 'douyin' in data or ('tiktok' in data):
@@ -159,30 +145,30 @@ def handle_request():
         tuan = insta(data)
       error = json.dumps({
         'link': tuan,
-        'contact': 'Le Tuan',
         'email': 'lht@duck.com',
         'author': 'Le Tuan',
-        'tele': 'https://t.me/lhtvnbot', 'requested_url': data
+        'tele': 'https://t.me/lhtvnbot',
+        'requested_url': data
       })
       return Response(error, status=200, mimetype='application/json')
     elif "facebook" in data or "fb.watch" in data:
       tuan = fb1(data)
       error = json.dumps({
         'link': tuan,
-        'contact': 'Le Tuan',
         'email': 'lht@duck.com',
         'author': 'Le Tuan',
-        'tele': 'https://t.me/lhtvnbot', 'requested_url': data
+        'tele': 'https://t.me/lhtvnbot',
+        'requested_url': data
       })
       return Response(error, status=200, mimetype='application/json')
     elif ("youtube" in data) or ('youtu.be' in data):
       tuan = youtube(data)
       error = json.dumps({
         'link': tuan,
-        'contact': 'Le Tuan',
         'email': 'lht@duck.com',
         'author': 'Le Tuan',
-        'tele': 'https://t.me/lhtvnbot', 'requested_url': data
+        'tele': 'https://t.me/lhtvnbot',
+        'requested_url': data
       })
       return Response(error, status=200, mimetype='application/json')
     else:
@@ -198,8 +184,6 @@ def handle_request():
     error = json.dumps({
       'message':
       "API to download Instagram/Douyin/Tiktok/FB/Youtube video. Please use POST method with link in body Request",
-      'contact':
-      'Le Tuan',
       'email':
       'lht@duck.com',
       'author':
